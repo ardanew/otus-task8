@@ -23,7 +23,7 @@ jobs:
         compiler: latest
 
     - name: Install tools
-      run: sudo apt update -y && sudo apt install -y cmake libgtest-dev graphviz
+      run: sudo apt update -y && sudo apt install -y cmake libgtest-dev libboost-all-dev graphviz
 
     - name: CMake full build & install
       run: ./scripts/build-x86_64-linux.sh 
