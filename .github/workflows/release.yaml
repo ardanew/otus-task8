@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install compiler
+      id: install_cc
+      uses: rlalik/setup-cpp-compiler@master
+      with:
+        compiler: latest
+
+    - name: Install tools
+      run: sudo apt update -y && sudo apt install -y cmake libgtest-dev graphviz
+
+    - name: CMake full build & install
+      run: ./scripts/build-x86_64-linux.sh 
+
+    - name: Doxygen generate
+      uses: mattnotmitt/doxygen-action@v1.1.0
+      with:
+        doxyfile-path: ./Doxyfile
+        working-directory: .
+
+    - name: Deploy documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./doc/html/
+        enable_jekyll: false
+        allow_empty_commit: false
+        force_orphan: true
+        publish_branch: gh-pages
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./output/x86_64-linux-release/packages/bayan-0.0.${{ github.run_number }}-Linux.deb
+        asset_name: bayan-0.0.${{ github.run_number }}-Linux.deb
+        asset_content_type: application/vnd.debian.binary-package
