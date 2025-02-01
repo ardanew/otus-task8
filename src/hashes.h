@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstddef>
 
+/// \brief class to calculate crc32 hash
 struct Crc32
 {
 	static uint32_t calculate(const void* data, size_t sz);
@@ -16,6 +17,7 @@ struct Md5_result
 /// \brief comparison operator to allow md5 results be in set/map
 bool operator<(const Md5_result& left, const Md5_result& right);
 
+/// \brief class to calculate md5 hash
 struct Md5
 {
 	static Md5_result calculate(const void* data, size_t sz);
