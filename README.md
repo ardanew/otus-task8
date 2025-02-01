@@ -1,36 +1,36 @@
 # Options
 
-Find duplicate (equal by hash) files
-Usage: bayan [options]
-Allowed options:
-  --help                        print help
-  -I [ --include ] arg (=.)     directories to include, space-separated
-  -E [ --exclude ] arg (=empty) directories to exclude, space-separated
-  -M [ --masks ] arg (=.*)      permitted file masks, regex, space-separated,
-                                case-insensitive
-  -D [ --scan-depth ] arg (=1)  scan depth, 1=recursive, 0=top level only
-  -S [ --file-size ] arg (=1)   minimum file size to scan
-  -B [ --block-size ] arg (=10) read block size
-  -H [ --hash-type ] arg (=0)   hash type, 0=CRC32, 1=MD5
-
-example: ./bayan -I .
-(or just ./bayan)
-starts search in current directory
-parses all files with size >= 1 byte
-scan depth = recursive (scans ., ./some-folder, ./some-folder/another-folder)
-reads blocks by 10-bytes chunks
-uses CRC32 hash
-
-example: ./bayan -I /first /second -E /second/third -M .*\.md .*\.txt -D 0 -S 2 -B 20 -H 1
-starts search in directories /first and /second, excludes directory /second/third
-parses just .md, .txt, .MD, .TXT (case-insensitive) files with file size >= 2 bytes
-scan depth = just top level (do not scan for /first/fourth)
-reads blocks with size 20 bytes
-uses MD5 hash
-
+Find duplicate (equal by hash) files\
+Usage: bayan [options]\
+Allowed options:\
+  --help                        print help\
+  -I [ --include ] arg (=.)     directories to include, space-separated\
+  -E [ --exclude ] arg (=empty) directories to exclude, space-separated\
+  -M [ --masks ] arg (=.*)      permitted file masks, regex, space-separated,\
+                                case-insensitive\
+  -D [ --scan-depth ] arg (=1)  scan depth, 1=recursive, 0=top level only\
+  -S [ --file-size ] arg (=1)   minimum file size to scan\
+  -B [ --block-size ] arg (=10) read block size\
+  -H [ --hash-type ] arg (=0)   hash type, 0=CRC32, 1=MD5\
+\
+example: ./bayan -I .\
+(or just ./bayan)\
+starts search in current directory\
+parses all files with size >= 1 byte\
+scan depth = recursive (scans ., ./some-folder, ./some-folder/another-folder)\
+reads blocks by 10-bytes chunks\
+uses CRC32 hash\
+\
+example: ./bayan -I /first /second -E /second/third -M .*\.md .*\.txt -D 0 -S 2 -B 20 -H 1\
+starts search in directories /first and /second, excludes directory /second/third\
+parses just .md, .txt, .MD, .TXT (case-insensitive) files with file size >= 2 bytes\
+scan depth = just top level (do not scan for /first/fourth)\
+reads blocks with size 20 bytes\
+uses MD5 hash\
+\
 # NOTE
-Использую std вместо буста там где возможно, ибо так было сказано на лекции
-
+Использую std вместо буста там где возможно, ибо так было сказано на лекции\
+\
 # 8. Boost
 
 Создаем полезную утилиту для быстрого поиска дублирующихся по содержимому файлов, практикуясь в использовании библиотеки Boost.
