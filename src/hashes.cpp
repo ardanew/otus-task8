@@ -26,8 +26,8 @@ Md5_result Md5::calculate(const void* data, size_t sz)
 	md5 hash;
 	hash.process_bytes(data, sz);
 
-	// эта штука возвращает char[16], а его неудобно в мапу совать
-	// сделаю чтоб возвращало результат в мой тип
+	// СЌС‚Р° С€С‚СѓРєР° РІРѕР·РІСЂР°С‰Р°РµС‚ char[16], Р° РµРіРѕ РЅРµСѓРґРѕР±РЅРѕ РІ РјР°РїСѓ СЃРѕРІР°С‚СЊ
+	// СЃРґРµР»Р°СЋ С‡С‚РѕР± РІРѕР·РІСЂР°С‰Р°Р»Рѕ СЂРµР·СѓР»СЊС‚Р°С‚ РІ РјРѕР№ С‚РёРї
 	md5::digest_type digest;
 	hash.get_digest(digest);
 	return *reinterpret_cast<Md5_result*>(&digest);
