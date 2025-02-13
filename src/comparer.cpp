@@ -15,8 +15,8 @@ Comparer<Hasher, HashResult>::Comparer(const Settings& settings) : m_settings(se
 {
 }
 
-// NOTE я знаю что есть решение через hashmap
-// но мне захотелось вручную сделать
+// NOTE В¤ Р·РЅР°СЋ С‡С‚Рѕ РµСЃС‚СЊ СЂРµС€РµРЅРёРµ С‡РµСЂРµР· hashmap
+// РЅРѕ РјРЅРµ Р·Р°С…РѕС‚РµР»РѕСЃСЊ РІСЂСѓС‡РЅСѓСЋ СЃРґРµР»Р°С‚СЊ
 struct File
 {
 	File() = default;
@@ -32,10 +32,10 @@ struct File
 template<class Hasher, class HashResult>
 vector<vector<string>> Comparer<Hasher, HashResult>::compare(size_t fileSize, std::set<std::string> files) const
 {
-	// все эти сложности из-за того что на вход могут прилететь 4 файла
-	// первые два которых равны и вторые два равны
+	// РІСЃРµ СЌС‚Рё СЃР»РѕР¶РЅРѕСЃС‚Рё РёР·-Р·Р° С‚РѕРіРѕ С‡С‚Рѕ РЅР° РІС…РѕРґ РјРѕРіСѓС‚ РїСЂРёР»РµС‚РµС‚СЊ 4 С„Р°Р№Р»Р°
+	// РїРµСЂРІС‹Рµ РґРІР° РєРѕС‚РѕСЂС‹С… СЂР°РІРЅС‹ Рё РІС‚РѕСЂС‹Рµ РґРІР° СЂР°РІРЅС‹
 
-	// на вход цикла пойдёт одна группа из 2х и более файлов
+	// РЅР° РІС…РѕРґ С†РёРєР»Р° РїРѕР№РґР„С‚ РѕРґРЅР° РіСЂСѓРїРїР° РёР· 2С… Рё Р±РѕР»РµРµ С„Р°Р№Р»РѕРІ
 	vector<vector<File>> input;
 	{
 		vector<File> candidates;
@@ -44,49 +44,49 @@ vector<vector<string>> Comparer<Hasher, HashResult>::compare(size_t fileSize, st
 		input.push_back(std::move(candidates));
 	}
 
-	// здесь будут результаты работы функции
+	// Р·РґРµСЃСЊ Р±СѓРґСѓС‚ СЂРµР·СѓР»СЊС‚Р°С‚С‹ СЂР°Р±РѕС‚С‹ С„СѓРЅРєС†РёРё
 	vector<vector<File>> results;
 	
-	// сюда будем читать чанки из файлов
+	// СЃСЋРґР° Р±СѓРґРµРј С‡РёС‚Р°С‚СЊ С‡Р°РЅРєРё РёР· С„Р°Р№Р»РѕРІ
 	std::vector<char> buf;
 	buf.resize(m_settings.readBlockSize);
 
-	// если сделать рекурсией то код будет красивый, но стек переполнится на больших файлах
+	// РµСЃР»Рё СЃРґРµР»Р°С‚СЊ СЂРµРєСѓСЂСЃРёРµР№ С‚Рѕ РєРѕРґ Р±СѓРґРµС‚ РєСЂР°СЃРёРІС‹Р№, РЅРѕ СЃС‚РµРє РїРµСЂРµРїРѕР»РЅРёС‚СЃВ¤ РЅР° Р±РѕР»СЊС€РёС… С„Р°Р№Р»Р°С…
 	while (true)
 	{
 		if (input.begin()->begin()->offset >= fileSize)
-		{ // дошли до конца файлов, перемещаем их в результаты функции
+		{ // РґРѕС€Р»Рё РґРѕ РєРѕРЅС†Р° С„Р°Р№Р»РѕРІ, РїРµСЂРµРјРµС‰Р°РµРј РёС… РІ СЂРµР·СѓР»СЊС‚Р°С‚С‹ С„СѓРЅРєС†РёРё
 			for (vector<File>& f : input)
 				results.push_back(std::move(f));
 			break;
 		}
 
-		// на вход цикла подаются группы файлов
-		// на выходе получаем (возможно ещё большую) новую группу файлов
-		// её отправляем на вход следующей итерации цикла для обсчёта следующего чанка
+		// РЅР° РІС…РѕРґ С†РёРєР»Р° РїРѕРґР°СЋС‚СЃВ¤ РіСЂСѓРїРїС‹ С„Р°Р№Р»РѕРІ
+		// РЅР° РІС‹С…РѕРґРµ РїРѕР»СѓС‡Р°РµРј (РІРѕР·РјРѕР¶РЅРѕ РµС‰Р„ Р±РѕР»СЊС€СѓСЋ) РЅРѕРІСѓСЋ РіСЂСѓРїРїСѓ С„Р°Р№Р»РѕРІ
+		// РµР„ РѕС‚РїСЂР°РІР»В¤РµРј РЅР° РІС…РѕРґ СЃР»РµРґСѓСЋС‰РµР№ РёС‚РµСЂР°С†РёРё С†РёРєР»Р° РґР»В¤ РѕР±СЃС‡Р„С‚Р° СЃР»РµРґСѓСЋС‰РµРіРѕ С‡Р°РЅРєР°
 
-		vector<vector<File>> newInput; // это будем подавать на следующую итерацию цикла
+		vector<vector<File>> newInput; // СЌС‚Рѕ Р±СѓРґРµРј РїРѕРґР°РІР°С‚СЊ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ РёС‚РµСЂР°С†РёСЋ С†РёРєР»Р°
 
-		// проходим по группам
+		// РїСЂРѕС…РѕРґРёРј РїРѕ РіСЂСѓРїРїР°Рј
 		for (vector<File>& candidatesGroup : input)
 		{
-			// хеш -> файлы с одинаковым хешем
+			// С…РµС€ -> С„Р°Р№Р»С‹ СЃ РѕРґРёРЅР°РєРѕРІС‹Рј С…РµС€РµРј
 			std::map<HashResult, std::vector<File>> tempResults;
 
 			for (File& candidate : candidatesGroup)
 			{
-				// для конечного чанка зануляем буфер - ибо прочесть можем не до конца (можно сделать чуть оптимальней)
+				// РґР»В¤ РєРѕРЅРµС‡РЅРѕРіРѕ С‡Р°РЅРєР° Р·Р°РЅСѓР»В¤РµРј Р±СѓС„РµСЂ - РёР±Рѕ РїСЂРѕС‡РµСЃС‚СЊ РјРѕР¶РµРј РЅРµ РґРѕ РєРѕРЅС†Р° (РјРѕР¶РЅРѕ СЃРґРµР»Р°С‚СЊ С‡СѓС‚СЊ РѕРїС‚РёРјР°Р»СЊРЅРµР№)
 				if (candidate.offset + m_settings.readBlockSize > fileSize)
 					memset(&buf[0], 0, buf.size());
 
-				// читаем блок
+				// С‡РёС‚Р°РµРј Р±Р»РѕРє
 				candidate.stream.read(&buf[0], m_settings.readBlockSize);
 				candidate.offset += m_settings.readBlockSize;
 
-				// считаем хеш
+				// СЃС‡РёС‚Р°РµРј С…РµС€
 				HashResult hash = Hasher::calculate(&buf[0], buf.size());
 
-				// складываем в мапу [hash -> files with same hash]
+				// СЃРєР»Р°РґС‹РІР°РµРј РІ РјР°РїСѓ [hash -> files with same hash]
 				if (auto it = tempResults.find(hash); it == tempResults.end())
 				{
 					tempResults[hash] = vector<File>();
@@ -96,7 +96,7 @@ vector<vector<string>> Comparer<Hasher, HashResult>::compare(size_t fileSize, st
 					it->second.push_back(std::move(candidate));
 			}
 
-			// те ячейки мапы в который один файл - не нужны
+			// С‚Рµ В¤С‡РµР№РєРё РјР°РїС‹ РІ РєРѕС‚РѕСЂС‹Р№ РѕРґРёРЅ С„Р°Р№Р» - РЅРµ РЅСѓР¶РЅС‹
 			for (auto it = tempResults.begin(); it != tempResults.end(); )
 			{
 				if (it->second.size() <= 1)
@@ -105,17 +105,17 @@ vector<vector<string>> Comparer<Hasher, HashResult>::compare(size_t fileSize, st
 					++it;
 			}
 
-			// оставшиеся ячейки мапы - это новые группы файлов
+			// РѕСЃС‚Р°РІС€РёРµСЃВ¤ В¤С‡РµР№РєРё РјР°РїС‹ - СЌС‚Рѕ РЅРѕРІС‹Рµ РіСЂСѓРїРїС‹ С„Р°Р№Р»РѕРІ
 			for (auto& kvp : tempResults)
 				newInput.push_back(std::move(kvp.second));
 		}
 
 		if (newInput.empty())
-			break; // все входные файлы отличаются
+			break; // РІСЃРµ РІС…РѕРґРЅС‹Рµ С„Р°Р№Р»С‹ РѕС‚Р»РёС‡Р°СЋС‚СЃВ¤
 		input = std::move(newInput);
 	}
 
-	// на выход требуются только имена
+	// РЅР° РІС‹С…РѕРґ С‚СЂРµР±СѓСЋС‚СЃВ¤ С‚РѕР»СЊРєРѕ РёРјРµРЅР°
 	std::vector<std::vector<std::string>> out;
 	for (auto& outer : results)
 	{
