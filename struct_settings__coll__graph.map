@@ -1,0 +1,13 @@
+<map id="Settings" name="Settings">
+<area shape="rect" id="Node000001" title="Holds settings from command line." alt="" coords="257,165,316,231"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,40,72"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="27,71,36,107,44,124,56,139,87,155,135,169,241,188,240,193,134,175,85,160,52,143,40,127,31,109,22,72"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="78,5,202,72"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="144,71,150,106,157,123,167,139,183,154,202,167,242,184,240,189,200,171,180,158,163,142,153,126,145,108,138,72"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="249,5,324,72"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,72,289,148,284,148,284,72"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="368,5,413,72"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="389,72,380,107,364,142,349,159,332,173,329,169,345,155,359,139,375,105,384,71"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="477,5,547,72"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="511,72,501,108,492,127,479,143,446,167,407,183,369,192,333,197,333,192,367,187,406,178,443,162,476,139,487,124,496,107,506,70"/>
+</map>
